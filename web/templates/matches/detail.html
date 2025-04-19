@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+    Отклик на заявку {{ object.call }}
+{% endblock %}
+
 {% block content %}
     <div class="container my-5">
-
-        <!-- Чат заявки -->
         <div class="row">
             <div class="col-12">
                 <a href="{% url 'call_detail' object.call_id %}" class="btn btn-outline-secondary">

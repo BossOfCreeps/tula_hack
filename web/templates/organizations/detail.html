@@ -2,6 +2,9 @@
 {% load custom_tags %}
 {% load static %}
 
+{% block title %}
+    Организация: {{ organization.name }}
+{% endblock %}
 
 {% block content %}
     {% is_organization_admin request.user organization as is_admin %}

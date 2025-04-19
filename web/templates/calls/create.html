@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+    Создание новой заявки
+{% endblock %}
+
 {% block content %}
     <div class="container my-5">
         <div class="row justify-content-center">
@@ -45,7 +49,7 @@
                             </div>
 
                             <!-- Описание -->
-                            <div class="mb-4">
+                            <div class="mb-5">
                                 <label for="text" class="form-label">Описание ситуации*</label>
                                 <textarea class="form-control" id="text" name="text" rows="4"
                                           placeholder="Опишите подробно, какая помощь требуется..." required></textarea>
@@ -53,8 +57,8 @@
                                 <div class="form-text">Максимально подробное описание поможет быстрее оказать помощь
                                 </div>
 
-                                <div class="mb-3 mt-2">
-                                    <button type="button" class="btn btn-primary" id="voice-input-btn">
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-outline-primary" id="voice-input-btn">
                                         <i class="bi bi-mic me-1"></i> Голосовой ввод
                                     </button>
                                     <div id="voice-status" class="badge bg-info text-dark ms-2 d-none">
