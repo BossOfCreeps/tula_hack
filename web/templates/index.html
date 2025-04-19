@@ -1,46 +1,47 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <!-- Герой-секция -->
     <section class="hero-section">
         <div class="container text-center">
-            <h1 class="display-3 fw-bold mb-4">Создаём будущее сегодня</h1>
-            <p class="lead mb-5">Инновационные решения для вашего бизнеса</p>
+            <h1 class="display-3 fw-bold mb-4">Находим помощь всем и каждому</h1>
+            <p class="lead mb-5">Связываем социальные службы и благотворительные организации с нуждающимися</p>
             <div class="d-flex justify-content-center gap-3">
-                <a href="#pricing" class="btn btn-light btn-lg px-4">Начать</a>
-                <a href="#features" class="btn btn-outline-light btn-lg px-4">Узнать больше</a>
+                <a href="{% url 'call_create' %}" class="btn btn-light btn-lg px-4">Мне нужна помощь</a>
+                <a href="#" class="btn btn-outline-light btn-lg px-4">Узнать больше о проекте</a>
             </div>
         </div>
     </section>
 
-    <!-- Новая секция: текст слева + картинка справа -->
+    <!-- Текст слева + картинка справа -->
     <section class="image-text-section py-5">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="content">
-                        <h2 class="fw-bold mb-4">Инновационные технологии для вашего бизнеса</h2>
-                        <p class="lead mb-4">Мы предлагаем комплексные решения, которые помогут вашему бизнесу выйти на
-                            новый уровень.</p>
+                        <h2 class="fw-bold mb-4">
+                            Инновационные технологии для социальной сферы
+                        </h2>
+                        <p class="lead mb-4">
+                            Мы предлагаем сервис, который объединяет всех в целях благотворения и социальной помощи.
+                        </p>
                         <ul class="list-unstyled mb-4">
-                            <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Уникальные
-                                разработки
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i> Возможность попросить о помощи
                             </li>
-                            <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Индивидуальный
-                                подход
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i> Чат с волонтерами
                             </li>
-                            <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Поддержка 24/7
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-primary me-2"></i> Список заявок
                             </li>
                         </ul>
-                        <div class="d-flex gap-3">
-                            <a href="#pricing" class="btn btn-primary px-4">Начать</a>
-                            <a href="#features" class="btn btn-outline-primary px-4">Подробнее</a>
-                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <img src="https://source.unsplash.com/random/800x600/?technology,office"
-                         alt="Технологии для бизнеса" class="img-fluid">
+                    <img src="{% static 'images/block_image.jpg' %}" alt="Инновационные технологии для социальной сферы"
+                         class="img-fluid">
                 </div>
             </div>
         </div>
@@ -50,18 +51,18 @@
     <section id="features" class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold">Наши возможности</h2>
-                <p class="lead text-muted">Все что нужно для вашего успеха</p>
+                <h2 class="display-5 fw-bold">Отличные особенности</h2>
+                <p class="lead text-muted">Почему стоит выбрать нас?</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body text-center p-4">
                             <div class="feature-icon">
-                                <i class="bi bi-speedometer2"></i>
+                                <i class="bi bi-house-fill"></i>
                             </div>
-                            <h3>Высокая скорость</h3>
-                            <p class="text-muted">Оптимизированные решения для мгновенной загрузки</p>
+                            <h3>Много организаций</h3>
+                            <p class="text-muted">На сервисе зарегистрировано более 500 организаций</p>
                             <div class="progress mt-3" style="height: 8px;">
                                 <div class="progress-bar bg-success" style="width: 95%"></div>
                             </div>
@@ -72,10 +73,10 @@
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body text-center p-4">
                             <div class="feature-icon">
-                                <i class="bi bi-shield-lock"></i>
+                                <i class="bi bi-phone"></i>
                             </div>
-                            <h3>Безопасность</h3>
-                            <p class="text-muted">Защита данных по международным стандартам</p>
+                            <h3>Удобство использования</h3>
+                            <p class="text-muted">Сайт имеет крупный интерфейс и адаптирован под смартфоны</p>
                             <div class="progress mt-3" style="height: 8px;">
                                 <div class="progress-bar bg-info" style="width: 100%"></div>
                             </div>
@@ -86,10 +87,10 @@
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body text-center p-4">
                             <div class="feature-icon">
-                                <i class="bi bi-phone"></i>
+                                <i class="bi bi-union"></i>
                             </div>
-                            <h3>Мобильность</h3>
-                            <p class="text-muted">Полная адаптация под любые устройства</p>
+                            <h3>Всё в одном месте</h3>
+                            <p class="text-muted">Можно пройти весь цикл поиска помощи не покидая сервис</p>
                             <div class="progress mt-3" style="height: 8px;">
                                 <div class="progress-bar bg-warning" style="width: 90%"></div>
                             </div>
@@ -112,10 +113,11 @@
                     <div class="card testimonial-card h-100">
                         <div class="card-body p-4">
                             <div class="d-flex mb-3">
-                                <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle me-3"
-                                     width="60" height="60">
+                                <img src="{% static "images/man.jpg" %}"
+                                     class="rounded-circle me-3"
+                                     width="60" height="60" alt="">
                                 <div>
-                                    <h5 class="mb-0">Анна Смирнова</h5>
+                                    <h5 class="mb-0">Иван Петров</h5>
                                     <div class="text-warning">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -125,8 +127,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="card-text">"Отличный сервис! Сайт работает быстро, поддержка всегда на связи.
-                                Рекомендую!"</p>
+                            <p class="card-text">
+                                "После потери работы не знал, куда обратиться. Нашел здесь несколько организаций,
+                                которые помогли с едой и поиском временного жилья. Очень благодарен!"
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -134,10 +138,11 @@
                     <div class="card testimonial-card h-100">
                         <div class="card-body p-4">
                             <div class="d-flex mb-3">
-                                <img src="https://randomuser.me/api/portraits/men/75.jpg" class="rounded-circle me-3"
+                                <img src="{% static "images/grand.jpg" %}"
+                                     class="rounded-circle me-3"
                                      width="60" height="60">
                                 <div>
-                                    <h5 class="mb-0">Иван Петров</h5>
+                                    <h5 class="mb-0">Анна Смирнова</h5>
                                     <div class="text-warning">
                                         <i class="bi bi-star-fill"></i>
                                         <i class="bi bi-star-fill"></i>
@@ -147,8 +152,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="card-text">"Перевели весь бизнес на эту платформу. Экономия времени и денег
-                                значительная."</p>
+                            <p class="card-text">
+                                "Спасибо за ваш сервис! Благодаря ему мы получили лекарства для бабушки, которые не
+                                могли себе позволить. Очень важное дело!"
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -156,7 +163,8 @@
                     <div class="card testimonial-card h-100">
                         <div class="card-body p-4">
                             <div class="d-flex mb-3">
-                                <img src="https://randomuser.me/api/portraits/women/63.jpg" class="rounded-circle me-3"
+                                <img src="{% static "images/mam.jpg" %}"
+                                     class="rounded-circle me-3"
                                      width="60" height="60">
                                 <div>
                                     <h5 class="mb-0">Елена Ковалёва</h5>
@@ -169,77 +177,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="card-text">"Интуитивно понятный интерфейс, быстро освоила все функции. Очень
-                                довольна!"</p>
+                            <p class="card-text">
+                                "Я осталась одна с детьми, и было очень тяжело. Благодаря этому сайту нам помогли с
+                                продуктами и одеждой. Спасибо за такую поддержку"
+                            </p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Секция блога -->
-    <section id="blog" class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold">Последние статьи</h2>
-                <p class="lead text-muted">Полезные материалы и новости</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card blog-card h-100">
-                        <img src="https://source.unsplash.com/random/600x400/?technology,1" class="card-img-top">
-                        <div class="card-body">
-                            <span class="badge bg-primary mb-2">Технологии</span>
-                            <h5 class="card-title">10 трендов веб-разработки в 2023</h5>
-                            <p class="card-text">Обзор самых перспективных технологий, которые изменят подход к созданию
-                                сайтов.</p>
-                        </div>
-                        <div class="card-footer bg-white border-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">3 дня назад</small>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Читать</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card blog-card h-100">
-                        <img src="https://source.unsplash.com/random/600x400/?business,1" class="card-img-top">
-                        <div class="card-body">
-                            <span class="badge bg-success mb-2">Бизнес</span>
-                            <h5 class="card-title">Как увеличить конверсию сайта</h5>
-                            <p class="card-text">Практические советы по оптимизации пользовательского опыта и увеличению
-                                продаж.</p>
-                        </div>
-                        <div class="card-footer bg-white border-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">1 неделю назад</small>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Читать</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card blog-card h-100">
-                        <img src="https://source.unsplash.com/random/600x400/?marketing,1" class="card-img-top">
-                        <div class="card-body">
-                            <span class="badge bg-warning text-dark mb-2">Маркетинг</span>
-                            <h5 class="card-title">Новые подходы к SEO в 2023</h5>
-                            <p class="card-text">Что изменилось в алгоритмах поисковых систем и как адаптировать свой
-                                сайт.</p>
-                        </div>
-                        <div class="card-footer bg-white border-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">2 недели назад</small>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Читать</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-4">
-                <a href="#" class="btn btn-primary">Все статьи</a>
             </div>
         </div>
     </section>
@@ -261,8 +205,8 @@
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                                  data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Просто зарегистрируйтесь на нашем сайте, выберите подходящий тарифный план и
-                                    следуйте инструкциям. Вы сможете начать работу сразу после регистрации.
+                                    Зарегистрируйтесь, укажите свои потребности или возможности помощи, и мы оперативно
+                                    свяжем вас с нужными организациями или людьми!
                                 </div>
                             </div>
                         </div>
@@ -270,15 +214,13 @@
                             <h3 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseTwo">
-                                    Какие способы оплаты вы принимаете?
+                                    Бесплатно ли пользоваться сервисом?
                                 </button>
                             </h3>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                                  data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Мы принимаем все основные кредитные карты (Visa, MasterCard, American Express),
-                                    PayPal, а также банковские переводы. Для корпоративных клиентов доступна оплата по
-                                    счету.
+                                    Да. Мы предоставляем бесплатный доступ к всем функциям нашего сервиса.
                                 </div>
                             </div>
                         </div>
@@ -292,8 +234,11 @@
                             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
                                  data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    Да, наше приложение доступно для iOS и Android. Вы можете скачать его в App Store
-                                    или Google Play. Все функции сайта доступны и в мобильной версии.
+                                    Пока наше приложение находится в разработке, но вы можете удобно пользоваться
+                                    сервисом через мобильную версию сайта – она адаптирована для смартфонов и планшетов.
+                                    <br>
+                                    Мы работаем над приложением, чтобы вам было еще удобнее получать и оказывать помощь.
+                                    Следите за обновлениями!
                                 </div>
                             </div>
                         </div>

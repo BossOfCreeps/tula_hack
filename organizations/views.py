@@ -7,7 +7,7 @@ from organizations.serializers import EmployeeSerializer, OrganizationSerializer
 
 
 class OrganizationViewSet(ModelViewSet):
-    queryset = Organization.objects.select_related("employees__user").all()
+    queryset = Organization.objects.prefetch_related("employees__user").all()
     serializer_class = OrganizationSerializer
     filterset_class = OrganizationFilter
 
