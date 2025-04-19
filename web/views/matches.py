@@ -3,6 +3,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, FormView, L
 
 from calls.filters import MatchFilter
 from calls.models import Match
+from chat.models import Notification
 from users.models import User
 from web.forms import MatchCreateForm, MatchSucceedForm
 
@@ -32,6 +33,16 @@ class MatchCreateView(CreateView):
     queryset = match_queryset
     form_class = MatchCreateForm
     template_name = "matches/create.html"
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        Notification.create_and_send(
+            user=self.object.call.user,
+            title="Найден волонтер",
+            text=f'Найден волонтер для заявки "{self.object.call}"',
+            link=reverse("call_detail", args=[self.object.call_id]),
+        )
+        return response
 
 
 class MatchDeleteView(DeleteView):

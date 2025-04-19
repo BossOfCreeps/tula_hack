@@ -116,25 +116,28 @@
               <li><h6 class="dropdown-header">Уведомления</h6></li>
               {% for notification in user.notifications.all %}
                 <li>
-                  <a class="dropdown-item d-flex align-items-center py-2" href="{{ notification.get_absolute_url }}">
+                  <a class="dropdown-item d-flex align-items-center py-2" href="{{ notification.link|default_if_none:'#' }}">
                     <div class="me-2">
                       <i class="bi bi-{{ notification.icon }} text-{{ notification.color }}"></i>
                     </div>
                     <div>
                       <div class="fw-bold">{{ notification.title }}</div>
-                      <small class="text-muted">{{ notification.timestamp|timesince }} назад</small>
+                      <small class="text-muted">{{ notification.text }}</small>
                     </div>
                   </a>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
-                <a class="dropdown-item text-center text-primary" href="{% url 'notifications_seed' %}?next={{ request.path }}">
+              </li>
+              {% endfor %}
+
+                {% if user.notifications.all %}
+            <a class="dropdown-item text-center text-primary" href="{% url 'notifications_seed' %}?next={{ request.path }}">
                   Пометить как прочитанные
                 </a>
-              </li>
-              {% empty %}
+            {% else %}
                 <li><span class="dropdown-item text-muted">Нет новых уведомлений</span></li>
-              {% endfor %}
+              {% endif %}
             </ul>
           </div>
 

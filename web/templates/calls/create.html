@@ -244,7 +244,7 @@ async function sendAudioToServer() {
 
   } catch (error) {
     console.error('Ошибка:', error);
-    alert('Ошибка распознавания: ' + error.message);
+    alert('Ошибка распознавания');
   } finally {
     voiceStatus.classList.add('d-none');
     voiceStatus.classList.replace('bg-warning', 'bg-info');

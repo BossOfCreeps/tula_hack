@@ -1,9 +1,7 @@
-/.idea/*
-/media/*
-
-
 db.sqlite3
 *.pyc
 .env
 /.venv/
 /.idea/
+/media/
+*.wav

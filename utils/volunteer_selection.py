@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.urls import reverse
 
 from calls.models import Call
 from chat.models import Notification
@@ -11,4 +12,9 @@ def volunteer_selection_logic(obj: Call):
     query = User.objects.filter(help_formats__contains=[obj.format], help_types__contains=[obj.type])
     query = query.filter(~Q(id=obj.user.id))
     for user in query:
-        Notification.create_and_send(user=user, title="Новая заявка", text="lorem ipsum")
+        Notification.create_and_send(
+            user=user,
+            title="Новая заявка",
+            text=f'Появилась заявка "{obj}"',
+            link=reverse("call_detail", args=[obj.id]),
+        )

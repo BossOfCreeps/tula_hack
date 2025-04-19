@@ -58,6 +58,9 @@ class Match(models.Model):
         self.status = MatchStatus.SUCCESS.value if is_success else MatchStatus.CLOSED.value
         self.save()
 
+        self.user.rating = Match.objects.filter(user=self.user).aggregate(models.Avg("rating"))["rating__avg"]
+        self.user.save()
+
         if is_success:
             call: Call = self.call
             call.status = CallStatus.DONE

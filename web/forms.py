@@ -45,7 +45,7 @@ class CallCreateForm(forms.ModelForm):
 class MatchCreateForm(forms.ModelForm):
     class Meta:
         model = Match
-        fields = "__all__"
+        exclude = ["status"]
 
 
 class MatchSucceedForm(forms.Form):

@@ -1,3 +1,4 @@
+from django.urls import reverse
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -35,7 +36,12 @@ class MatchViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         obj: Match = serializer.save()
-        Notification.create_and_send(user=obj.call.user, title="Найден волонтер", text="lorem ipsum")
+        Notification.create_and_send(
+            user=obj.call.user,
+            title="Найден волонтер",
+            text=f'Найден волонтер для заявки "{obj.call}"',
+            link=reverse("call_detail", args=[obj.call_id]),
+        )
 
     @action(methods=["post"], detail=True)
     def rating(self, request, pk):
