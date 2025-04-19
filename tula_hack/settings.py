@@ -167,3 +167,7 @@ ASGI_APPLICATION = "tula_hack.asgi.application"
 CHANNEL_LAYERS = {
     "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
 }
+
+MATCH_PAGE_SIZE = 5
+CALL_PAGE_SIZE = 5
+ORGANIZATION_PAGE_SIZE = 5

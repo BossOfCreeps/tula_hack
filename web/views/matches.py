@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView
 
@@ -13,7 +14,7 @@ match_queryset = Match.objects.select_related("user", "call__user").prefetch_rel
 class MatchListView(ListView):
     filterset_class = MatchFilter
     template_name = "matches/list.html"
-    paginate_by = 3
+    paginate_by = settings.MATCH_PAGE_SIZE
 
     def get_queryset(self):
         return self.filterset_class(

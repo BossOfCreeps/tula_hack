@@ -16,8 +16,8 @@ def volunteer_selection_logic(obj: Call):
     if obj.format == HelpFormat.OFFLINE.value:
         users = users.filter(city=obj.user.city)
 
-    wanted_rating = users.aggregate(Avg("rating"))["rating__avg"]
-    users = users.filter(rating__gte=wanted_rating)
+    wanted_rating = users.aggregate(Avg("rating"))["rating__avg"] or 0
+    users = users.filter(rating__isnull=False, rating__gte=wanted_rating)
 
     for user in users:
         Notification.create_and_send(

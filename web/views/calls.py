@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, View
@@ -14,7 +15,7 @@ call_queryset = Call.objects.select_related("user").all()
 class CallListView(ListView):
     filterset_class = CallFilter
     template_name = "calls/list.html"
-    paginate_by = 3
+    paginate_by = settings.CALL_PAGE_SIZE
 
     def get_queryset(self):
         return self.filterset_class(self.request.GET, call_queryset, request=self.request).qs

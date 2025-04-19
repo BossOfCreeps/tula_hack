@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
@@ -11,7 +12,7 @@ organization_queryset = Organization.objects.prefetch_related("employees").all()
 class OrganizationListView(ListView):
     filterset_class = OrganizationFilter
     template_name = "organizations/list.html"
-    paginate_by = 3
+    paginate_by = settings.ORGANIZATION_PAGE_SIZE
 
     def get_queryset(self):
         return self.filterset_class(self.request.GET, organization_queryset, request=self.request).qs
