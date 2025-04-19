@@ -18,8 +18,7 @@
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
                             <input type="text" class="form-control" id="search" name="search"
-                                   placeholder="Название или описание"
-                                   value="{{ request.GET.search }}">
+                                   placeholder="Название или описание" value="{{ request.GET.search }}">
                         </div>
                     </div>
 
@@ -30,7 +29,8 @@
                             <option value="employee" {% if request.GET.my == 'employee' %}selected{% endif %}>
                                 Сотрудник
                             </option>
-                            <option value="admin" {% if request.GET.my == 'admin' %}selected{% endif %}>Администратор
+                            <option value="admin" {% if request.GET.my == 'admin' %}selected{% endif %}>
+                                Администратор
                             </option>
                         </select>
                     </div>
@@ -49,7 +49,6 @@
             {% for organization in object_list %}
                 <div class="col">
                     <div class="card h-100 border-0 shadow-sm hover-card">
-
                         <div class="logo-wrapper bg-white p-3 text-center"
                              style="height: 180px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid rgba(0,0,0,0.05);">
                             {% if organization.logo %}
@@ -113,10 +112,13 @@
 
                     {% for num in page_obj.paginator.page_range %}
                         {% if page_obj.number == num %}
-                            <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#">{{ num }}</a>
+                            </li>
                         {% else %}
-                            <li class="page-item"><a class="page-link"
-                                                     href="?{% param_replace request page=num %}">{{ num }}</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="?{% param_replace request page=num %}">{{ num }}</a>
+                            </li>
                         {% endif %}
                     {% endfor %}
 
@@ -169,6 +171,5 @@
         .hover-card:hover .logo-wrapper::after {
             opacity: 1;
         }
-
     </style>
 {% endblock %}

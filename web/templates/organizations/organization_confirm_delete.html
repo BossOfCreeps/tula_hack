@@ -23,7 +23,8 @@
                                 <div>
                                     <h5 class="alert-heading">Внимание!</h5>
                                     <p class="mb-0">Вы собираетесь удалить организацию
-                                        <strong>"{{ object.name }}"</strong>. Это действие нельзя отменить.</p>
+                                        <strong>"{{ object.name }}"</strong>. Это действие нельзя отменить.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -33,7 +34,7 @@
                                 <div class="flex-shrink-0 me-3">
                                     {% if object.logo %}
                                         <img src="{{ object.logo.url }}" class="rounded" width="60" height="60"
-                                             style="object-fit: cover;">
+                                             style="object-fit: cover;" alt="">
                                     {% else %}
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center"
                                              style="width: 60px; height: 60px;">
@@ -57,8 +58,9 @@
                         </div>
 
                         <div class="impact-warning bg-light p-3 rounded mb-4">
-                            <h5 class="text-danger mb-3"><i class="bi bi-lightning-charge-fill me-2"></i>Последствия
-                                удаления:</h5>
+                            <h5 class="text-danger mb-3">
+                                <i class="bi bi-lightning-charge-fill me-2"></i>Последствия удаления:
+                            </h5>
                             <ul class="mb-0">
                                 <li>Все данные организации будут безвозвратно удалены</li>
                                 <li>Сотрудники потеряют привязку к этой организации</li>

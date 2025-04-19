@@ -16,8 +16,9 @@
                         <select class="form-select" id="type" name="type">
                             <option value="">Все типы</option>
                             {% for value, label in HelpType.choices %}
-                                <option value="{{ value }}"
-                                        {% if request.GET.type == value %}selected{% endif %}>{{ label }}</option>
+                                <option value="{{ value }}" {% if request.GET.type == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
@@ -27,8 +28,9 @@
                         <select class="form-select" id="format" name="format">
                             <option value="">Все форматы</option>
                             {% for value, label in HelpFormat.choices %}
-                                <option value="{{ value }}"
-                                        {% if request.GET.format == value %}selected{% endif %}>{{ label }}</option>
+                                <option value="{{ value }}" {% if request.GET.format == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
@@ -38,8 +40,9 @@
                         <select class="form-select" id="status" name="status">
                             <option value="">Все статусы</option>
                             {% for value, label in MatchStatus.choices %}
-                                <option value="{{ value }}"
-                                        {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+                                <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
@@ -108,7 +111,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    {{ match.call.user.get_full_name|default:match.user.username }}
+                                    {{ match.call.user.get_full_name|default:match.call.user.username }}
                                 </td>
                                 <td>
                                     {{ match.get_status_display }}
@@ -147,6 +150,7 @@
                         <li class="page-item">
                             <a class="page-link" href="?page=
 
+
                                     {{ page_obj.previous_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
                                 <i class="bi bi-chevron-left"></i>
                             </a>
@@ -159,6 +163,7 @@
                         {% else %}
                             <li class="page-item"><a class="page-link" href="?page=
 
+
                                     {{ num }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ num }}</a>
                             </li>
                         {% endif %}
@@ -167,6 +172,7 @@
                     {% if page_obj.has_next %}
                         <li class="page-item">
                             <a class="page-link" href="?page=
+
 
                                     {{ page_obj.next_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
                                 <i class="bi bi-chevron-right"></i>

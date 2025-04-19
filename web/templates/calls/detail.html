@@ -164,14 +164,16 @@
                                         </div>
 
                                         {% if match.user == request.user or is_admin %}
-                                            <div class="mt-3 pt-2 border-top">
-                                                <div class="btn-group" role="group">
-                                                    <a href="{% url 'match_delete' match.id %}"
-                                                       class="btn btn-sm btn-outline-danger">
-                                                        <i class="bi bi-trash"></i> Отказаться
-                                                    </a>
+                                            {% if match.status == MatchStatus.ACTIVE.value %}
+                                                <div class="mt-3 pt-2 border-top">
+                                                    <div class="btn-group" role="group">
+                                                        <a href="{% url 'match_delete' match.id %}"
+                                                           class="btn btn-sm btn-outline-danger">
+                                                            <i class="bi bi-trash"></i> Отказаться
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>
