@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-trash me-2"></i>Удаление сотрудника
+                    </h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-warning mb-4">
+                        <p class="mb-0">Вы уверены, что хотите удалить сотрудника <strong>{{ object.user.get_full_name|default:object.user.username }}</strong> из организации?</p>
+                    </div>
+
+                    <div class="d-flex mb-4">
+                        <div class="flex-shrink-0 me-3">
+                            <i class="bi bi-person-x" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h6>{{ object.position }}</h6>
+                            <p class="text-muted small mb-0">
+                                {% if object.is_admin %}
+                                    <span class="badge bg-danger">Администратор</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Сотрудник</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'organization_detail' object.organization.id %}"
+                               class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Отмена
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i> Удалить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

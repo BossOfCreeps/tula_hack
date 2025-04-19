@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Герой-секция -->
+    <section class="hero-section">
+      <div class="container text-center">
+        <h1 class="display-3 fw-bold mb-4">Создаём будущее сегодня</h1>
+        <p class="lead mb-5">Инновационные решения для вашего бизнеса</p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="#pricing" class="btn btn-light btn-lg px-4">Начать</a>
+          <a href="#features" class="btn btn-outline-light btn-lg px-4">Узнать больше</a>
+        </div>
+      </div>
+    </section>
+
+      <!-- Новая секция: текст слева + картинка справа -->
+      <section class="image-text-section py-5">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="content">
+                <h2 class="fw-bold mb-4">Инновационные технологии для вашего бизнеса</h2>
+                <p class="lead mb-4">Мы предлагаем комплексные решения, которые помогут вашему бизнесу выйти на новый уровень.</p>
+                <ul class="list-unstyled mb-4">
+                  <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Уникальные разработки</li>
+                  <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Индивидуальный подход</li>
+                  <li class="mb-3"><i class="bi bi-check-circle-fill text-primary me-2"></i> Поддержка 24/7</li>
+                </ul>
+                <div class="d-flex gap-3">
+                  <a href="#pricing" class="btn btn-primary px-4">Начать</a>
+                  <a href="#features" class="btn btn-outline-primary px-4">Подробнее</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <img src="https://source.unsplash.com/random/800x600/?technology,office" alt="Технологии для бизнеса" class="img-fluid">
+            </div>
+          </div>
+        </div>
+      </section>
+      
+    <!-- Секция возможностей -->
+    <section id="features" class="py-5 bg-light">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="display-5 fw-bold">Наши возможности</h2>
+          <p class="lead text-muted">Все что нужно для вашего успеха</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body text-center p-4">
+                <div class="feature-icon">
+                  <i class="bi bi-speedometer2"></i>
+                </div>
+                <h3>Высокая скорость</h3>
+                <p class="text-muted">Оптимизированные решения для мгновенной загрузки</p>
+                <div class="progress mt-3" style="height: 8px;">
+                  <div class="progress-bar bg-success" style="width: 95%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body text-center p-4">
+                <div class="feature-icon">
+                  <i class="bi bi-shield-lock"></i>
+                </div>
+                <h3>Безопасность</h3>
+                <p class="text-muted">Защита данных по международным стандартам</p>
+                <div class="progress mt-3" style="height: 8px;">
+                  <div class="progress-bar bg-info" style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body text-center p-4">
+                <div class="feature-icon">
+                  <i class="bi bi-phone"></i>
+                </div>
+                <h3>Мобильность</h3>
+                <p class="text-muted">Полная адаптация под любые устройства</p>
+                <div class="progress mt-3" style="height: 8px;">
+                  <div class="progress-bar bg-warning" style="width: 90%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Секция отзывов -->
+    <section id="testimonials" class="py-5">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="display-5 fw-bold">Отзывы клиентов</h2>
+          <p class="lead text-muted">Что говорят о нас</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card testimonial-card h-100">
+              <div class="card-body p-4">
+                <div class="d-flex mb-3">
+                  <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle me-3" width="60" height="60">
+                  <div>
+                    <h5 class="mb-0">Анна Смирнова</h5>
+                    <div class="text-warning">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="card-text">"Отличный сервис! Сайт работает быстро, поддержка всегда на связи. Рекомендую!"</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card testimonial-card h-100">
+              <div class="card-body p-4">
+                <div class="d-flex mb-3">
+                  <img src="https://randomuser.me/api/portraits/men/75.jpg" class="rounded-circle me-3" width="60" height="60">
+                  <div>
+                    <h5 class="mb-0">Иван Петров</h5>
+                    <div class="text-warning">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="card-text">"Перевели весь бизнес на эту платформу. Экономия времени и денег значительная."</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card testimonial-card h-100">
+              <div class="card-body p-4">
+                <div class="d-flex mb-3">
+                  <img src="https://randomuser.me/api/portraits/women/63.jpg" class="rounded-circle me-3" width="60" height="60">
+                  <div>
+                    <h5 class="mb-0">Елена Ковалёва</h5>
+                    <div class="text-warning">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="card-text">"Интуитивно понятный интерфейс, быстро освоила все функции. Очень довольна!"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Секция блога -->
+    <section id="blog" class="py-5 bg-light">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="display-5 fw-bold">Последние статьи</h2>
+          <p class="lead text-muted">Полезные материалы и новости</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card blog-card h-100">
+              <img src="https://source.unsplash.com/random/600x400/?technology,1" class="card-img-top">
+              <div class="card-body">
+                <span class="badge bg-primary mb-2">Технологии</span>
+                <h5 class="card-title">10 трендов веб-разработки в 2023</h5>
+                <p class="card-text">Обзор самых перспективных технологий, которые изменят подход к созданию сайтов.</p>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-muted">3 дня назад</small>
+                  <a href="#" class="btn btn-sm btn-outline-primary">Читать</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card blog-card h-100">
+              <img src="https://source.unsplash.com/random/600x400/?business,1" class="card-img-top">
+              <div class="card-body">
+                <span class="badge bg-success mb-2">Бизнес</span>
+                <h5 class="card-title">Как увеличить конверсию сайта</h5>
+                <p class="card-text">Практические советы по оптимизации пользовательского опыта и увеличению продаж.</p>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-muted">1 неделю назад</small>
+                  <a href="#" class="btn btn-sm btn-outline-primary">Читать</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card blog-card h-100">
+              <img src="https://source.unsplash.com/random/600x400/?marketing,1" class="card-img-top">
+              <div class="card-body">
+                <span class="badge bg-warning text-dark mb-2">Маркетинг</span>
+                <h5 class="card-title">Новые подходы к SEO в 2023</h5>
+                <p class="card-text">Что изменилось в алгоритмах поисковых систем и как адаптировать свой сайт.</p>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-muted">2 недели назад</small>
+                  <a href="#" class="btn btn-sm btn-outline-primary">Читать</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <a href="#" class="btn btn-primary">Все статьи</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Секция часто задаваемых вопросов -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <h2 class="fw-bold mb-4">Часто задаваемые вопросы</h2>
+            <div class="accordion" id="faqAccordion">
+              <div class="accordion-item">
+                <h3 class="accordion-header" id="headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                    Как начать пользоваться сервисом?
+                  </button>
+                </h3>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Просто зарегистрируйтесь на нашем сайте, выберите подходящий тарифный план и следуйте инструкциям. Вы сможете начать работу сразу после регистрации.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                    Какие способы оплаты вы принимаете?
+                  </button>
+                </h3>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Мы принимаем все основные кредитные карты (Visa, MasterCard, American Express), PayPal, а также банковские переводы. Для корпоративных клиентов доступна оплата по счету.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header" id="headingThree">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                    Есть ли мобильное приложение?
+                  </button>
+                </h3>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Да, наше приложение доступно для iOS и Android. Вы можете скачать его в App Store или Google Play. Все функции сайта доступны и в мобильной версии.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <h2 class="fw-bold mb-4">Свяжитесь с нами</h2>
+            <form>
+              <div class="mb-3">
+                <label for="contactName" class="form-label">Ваше имя</label>
+                <input type="text" class="form-control" id="contactName" placeholder="Иван Иванов">
+              </div>
+              <div class="mb-3">
+                <label for="contactEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="contactEmail" placeholder="name@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="contactMessage" class="form-label">Сообщение</label>
+                <textarea class="form-control" id="contactMessage" rows="4"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Отправить</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

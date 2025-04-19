@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Оценка отклика на заявку</h4>
+        </div>
+
+        <div class="card-body">
+          <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <input type="hidden" name="match" value="{{ object.id }}">
+
+            <div class="rating-group mb-5">
+              <label class="form-label d-block">Оценка</label>
+              <div class="stars-container d-flex">
+                {% for i in "12345" %}
+                  <div class="star-wrapper" data-value="{{ i }}">
+                    <input type="radio" id="star-{{ i }}" name="rating" value="{{ i }}" name="rating"
+                           class="visually-hidden" {% if i == "3" %}checked{% endif %} required value="3">
+                    <label for="star-{{ i }}" class="star-label">
+                      <i class="bi bi-star-fill fs-1 default-star"></i>
+                      <i class="bi bi-star fs-1 active-star"></i>
+                    </label>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="invalid-feedback">Пожалуйста, поставьте оценку</div>
+            </div>
+
+            <!-- Поле комментария -->
+            <div class="mb-4">
+              <label for="comment" class="form-label">Комментарий</label>
+              <textarea class="form-control" id="comment" name="text" rows="5" required
+                        placeholder="Опишите ваше впечатление о помощи...">{% if feedback.comment %}{{ feedback.comment }}{% endif %}</textarea>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="d-flex">
+
+              <button type="submit" name="close" value="1" class="btn btn-success me-3">
+                <i class="bi bi-check-circle me-1"></i> Оценить и закрыть заявку
+              </button>
+
+              <button type="submit" name="close" value="0" class="btn btn-secondary">
+                <i class="bi bi-hand-thumbs-down me-1"></i> Не закрывать заявку
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stars-container {
+    gap: 0.5rem;
+    flex-direction: row-reverse; /* Важно! Разворачиваем порядок */
+    justify-content: flex-end; /* Выравниваем по левому краю */
+  }
+
+  .star-wrapper {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .star-label {
+    position: relative;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .star-label i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.2s;
+  }
+
+  .default-star {
+    color: #ffc107; /* Желтый цвет для выбранных звезд */
+    opacity: 0;
+  }
+
+  .active-star {
+    color: #dee2e6; /* Серый цвет для невыбранных звезд */
+  }
+
+  /* Выделение при выборе */
+  .star-wrapper input:checked ~ .star-label .default-star,
+  .star-wrapper.selected .star-label .default-star {
+    opacity: 1;
+  }
+
+  /* Выделение всех звезд справа (визуально слева) */
+  .star-wrapper input:checked ~ .star-wrapper .star-label .default-star,
+  .star-wrapper.selected ~ .star-wrapper .star-label .default-star {
+    opacity: 1;
+  }
+
+  /* Выделение при наведении */
+  .star-wrapper:hover .star-label .default-star,
+  .star-wrapper:hover ~ .star-wrapper .star-label .default-star {
+    opacity: 1;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const stars = document.querySelectorAll('.star-wrapper');
+
+  // Обработка клика
+  stars.forEach(star => {
+    star.addEventListener('click', function() {
+      // Удаляем класс selected у всех звезд
+      stars.forEach(s => s.classList.remove('selected'));
+
+      // Добавляем класс selected текущей звезде и всем следующим (визуально слева)
+      let current = this;
+      while (current) {
+        current.classList.add('selected');
+        current = current.nextElementSibling;
+      }
+    });
+  });
+
+  // Инициализация при загрузке
+  const checkedStar = document.querySelector('.star-wrapper input:checked');
+  if (checkedStar) {
+    checkedStar.closest('.star-wrapper').click();
+  }
+});
+</script>
+{% endblock %}

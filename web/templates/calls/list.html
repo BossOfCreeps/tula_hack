@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <!-- Фильтры -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body">
+      <form method="get" class="row g-3">
+        <div class="col-md-4">
+          <label for="type" class="form-label">Тип помощи</label>
+          <select class="form-select" id="type" name="type">
+            <option value="">Все типы</option>
+            {% for value, label in HelpType.choices %}
+            <option value="{{ value }}" {% if request.GET.type == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="status" class="form-label">Статус</label>
+          <select class="form-select" id="status" name="status">
+            <option value="">Все статусы</option>
+            {% for value, label in CallStatus.choices %}
+            <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary me-2">
+            <i class="bi bi-funnel"></i> Применить
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Список заявок -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for call in object_list %}
+    <a href="{% url 'call_detail' call.id %}" style="text-decoration: none;">
+     <div class="col">
+      <div class="card h-100 border-0 shadow-sm call-card
+           {% if call.status == CallStatus.NEW.value %}border-start border-3 border-primary
+           {% elif call.status == CallStatus.IN_PROGRESS.value %}border-start border-3 border-warning
+           {% elif call.status == CallStatus.DONE.value %}border-start border-3 border-success{% endif %}">
+
+        <div class="card-header bg-white">
+            <h5 class="card-title text-primary">
+            {% if call.type == 'PSYCHO' %}
+            <i class="bi bi-chat-left-heart me-2"></i>
+            {% elif call.type == 'FINANCIAL' %}
+            <i class="bi bi-piggy-bank me-2"></i>
+            {% elif call.type == 'VOLUNTEER' %}
+            <i class="bi bi-people me-2"></i>
+            {% endif %}
+            {{ call }}
+          </h5>
+        </div>
+
+        <div class="card-body">
+
+          <p class="card-text text-muted mb-3">
+            <i class="bi bi-chat-left-text me-2"></i>
+            {{ call.text|truncatechars:100 }}
+          </p>
+
+          <div class="call-meta mb-3">
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-geo-alt text-danger me-2"></i>
+              <span class="small">{{ call.address|truncatechars:30 }}</span>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-clock text-warning me-2"></i>
+              <span class="small">{{ call.time }}</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="bi bi-person text-info me-2"></i>
+              <span class="small">{{ call.user.get_full_name|default:call.user.username }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </a>
+    {% empty %}
+        <div class="card-body text-center py-5">
+          <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+          <h5 class="mt-3 text-muted">Нет заявок о помощи</h5>
+          <p class="text-muted">Попробуйте изменить параметры фильтрации</p>
+        </div>
+    {% endfor %}
+  </div>
+
+  <!-- Пагинация -->
+  {% if is_paginated %}
+  <nav class="mt-4">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+          <i class="bi bi-chevron-left"></i>
+        </a>
+      </li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-page-link" href="?page={{ page_obj.next_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+</div>
+
+<style>
+  .call-card {
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .call-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  .call-meta {
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+
+  .card-header {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+</style>
+
+<script>
+// Активация тултипов
+document.addEventListener('DOMContentLoaded', function() {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+})
+</script>
+{% endblock %}

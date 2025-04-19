@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white py-3">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-plus-circle me-3" style="font-size: 1.5rem;"></i>
+            <h4 class="mb-0">Новая заявка о помощи</h4>
+          </div>
+        </div>
+
+        <div class="card-body p-4">
+          <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+          <input type="hidden" name="user" value="{{ user.id }}">
+
+            <!-- Тип и формат помощи -->
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3">
+                <label for="type" class="form-label">Тип помощи*</label>
+                <select class="form-select" id="type" name="type" required>
+                  <option value="" selected disabled>Выберите тип</option>
+                  {% for value, label in HelpType.choices %}
+                  <option value="{{ value }}">{{ label }}</option>
+                  {% endfor %}
+                </select>
+                <div class="invalid-feedback">Пожалуйста, выберите тип помощи</div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="format" class="form-label">Формат помощи*</label>
+                <select class="form-select" id="format" name="format" required>
+                  <option value="" selected disabled>Выберите формат</option>
+                  {% for value, label in HelpFormat.choices %}
+                  <option value="{{ value }}">{{ label }}</option>
+                  {% endfor %}
+                </select>
+                <div class="invalid-feedback">Пожалуйста, выберите формат помощи</div>
+              </div>
+            </div>
+
+            <!-- Описание -->
+            <div class="mb-4">
+              <label for="text" class="form-label">Описание ситуации*</label>
+              <textarea class="form-control" id="text" name="text" rows="4"
+                        placeholder="Опишите подробно, какая помощь требуется..." required></textarea>
+              <div class="invalid-feedback">Пожалуйста, опишите ситуацию</div>
+              <div class="form-text">Максимально подробное описание поможет быстрее оказать помощь</div>
+
+            <div class="mb-3 mt-2">
+              <button type="button" class="btn btn-primary" id="voice-input-btn">
+                <i class="bi bi-mic me-1"></i> Голосовой ввод
+              </button>
+              <div id="voice-status" class="badge bg-info text-dark ms-2 d-none">
+                <i class="bi bi-record-circle"></i> Идет запись...
+              </div>
+            </div>
+
+            </div>
+
+            <!-- Контактные данные -->
+            <div class="card border-0 bg-light mb-4">
+              <div class="card-body">
+                <h5 class="text-primary mb-3"><i class="bi bi-telephone me-2"></i>Контактные данные</h5>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="address" class="form-label">Адрес*</label>
+                    <textarea class="form-control" id="address" name="address" rows="2"
+                              placeholder="Где требуется помощь?" required></textarea>
+                    <div class="invalid-feedback">Пожалуйста, укажите адрес</div>
+
+
+
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="time" class="form-label">Время*</label>
+                    <textarea class="form-control" id="time" name="time" rows="2"
+                              placeholder="Когда требуется помощь?" required></textarea>
+                    <div class="invalid-feedback">Пожалуйста, укажите время</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="contacts" class="form-label">Контактные данные*</label>
+                  <textarea class="form-control" id="contacts" name="contacts" rows="2"
+                            placeholder="Как с вами связаться?" required></textarea>
+                  <div class="invalid-feedback">Пожалуйста, укажите контакты</div>
+                  <div class="form-text">Телефон, email или другие способы связи</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Кнопки отправки -->
+            <div class="d-flex justify-content-between pt-3 border-top">
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-send me-2"></i> Отправить заявку
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-control, .form-select {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+  }
+
+  textarea.form-control {
+    min-height: 120px;
+  }
+
+  .card {
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+// Валидация формы
+(function () {
+  'use strict'
+
+  var forms = document.querySelectorAll('.needs-validation')
+
+  Array.from(forms).forEach(function (form) {
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+    <script>
+const voiceBtn = document.getElementById('voice-input-btn');
+const voiceStatus = document.getElementById('voice-status');
+let mediaRecorder;
+let audioChunks = [];
+let targetTextarea = null;
+
+// Проверяем поддержку MediaRecorder
+if (!window.MediaRecorder) {
+  voiceBtn.disabled = true;
+  voiceBtn.title = "Ваш браузер не поддерживает запись аудио";
+}
+
+// Получаем поддерживаемый mimeType
+function getSupportedMimeType() {
+  const possibleTypes = [
+    'audio/webm;codecs=opus',
+    'audio/ogg;codecs=opus',
+    'audio/mp4',
+    'audio/mpeg'
+  ];
+  return possibleTypes.find(mimeType =>
+    MediaRecorder.isTypeSupported(mimeType)
+  ) || '';
+}
+
+voiceBtn.addEventListener('click', async function() {
+  if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+    await startRecording();
+  } else {
+    stopRecording();
+  }
+});
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mimeType = getSupportedMimeType();
+
+    mediaRecorder = new MediaRecorder(stream, {
+      mimeType: mimeType
+    });
+
+    audioChunks = [];
+    targetTextarea = document.getElementById('text');
+
+    mediaRecorder.ondataavailable = e => {
+      if (e.data.size > 0) audioChunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = sendAudioToServer;
+    mediaRecorder.start(100); // Собираем данные каждые 100мс
+
+    voiceStatus.classList.remove('d-none');
+    voiceBtn.innerHTML = '<i class="bi bi-stop-circle me-1"></i> Остановить';
+
+    setTimeout(() => {
+      if (mediaRecorder?.state === 'recording') {
+        stopRecording();
+      }
+    }, 30000);
+
+  } catch (error) {
+    console.error('Ошибка:', error);
+    alert(`Ошибка доступа к микрофону: ${error.message}`);
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder?.state === 'recording') {
+    mediaRecorder.stop();
+    mediaRecorder.stream.getTracks().forEach(track => track.stop());
+  }
+}
+
+async function sendAudioToServer() {
+  voiceStatus.innerHTML = '<i class="bi bi-hourglass-split"></i> Обработка...';
+  voiceStatus.classList.replace('bg-info', 'bg-warning');
+
+  try {
+    const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'recording.webm');
+    formData.append('mime_type', mediaRecorder.mimeType);
+
+    const response = await fetch('{% url 'speech_to_text' %}', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) throw new Error(await response.text());
+
+    const result = await response.json();
+    if (result.text && targetTextarea) {
+      targetTextarea.value = result.text;
+    }
+
+  } catch (error) {
+    console.error('Ошибка:', error);
+    alert('Ошибка распознавания: ' + error.message);
+  } finally {
+    voiceStatus.classList.add('d-none');
+    voiceStatus.classList.replace('bg-warning', 'bg-info');
+    voiceStatus.innerHTML = '<i class="bi bi-record-circle"></i> Идет запись...';
+    voiceBtn.innerHTML = '<i class="bi bi-mic me-1"></i> Голосовой ввод';
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-person-plus me-3" style="font-size: 1.5rem;"></i>
+                        <h4 class="mb-0">Добавить сотрудника</h4>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <form method="post" class="needs-validation" novalidate action="">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="organization" value="{{ request.GET.organization }}">
+
+                        <!-- Выбор пользователя -->
+                        <div class="mb-4">
+                            <label for="user" class="form-label">Пользователь*</label>
+                            <select class="form-select select2" id="user" name="user" required>
+                                <option value="" selected disabled>Выберите пользователя</option>
+                                {% for user in available_users %}
+                                    <option value="{{ user.id }}">
+                                        {{ user.get_full_name|default:user.username }}
+                                        ({{ user.email }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Пожалуйста, выберите пользователя</div>
+                        </div>
+
+                        <!-- Должность -->
+                        <div class="mb-4">
+                            <label for="position" class="form-label">Должность*</label>
+                            <input type="text" class="form-control" id="position" name="position"
+                                   placeholder="Например: Менеджер проектов" required>
+                            <div class="invalid-feedback">Пожалуйста, укажите должность</div>
+                        </div>
+
+                        <!-- Права доступа -->
+                        <div class="mb-4">
+                            <label class="form-label">Права доступа</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                           id="is_admin" name="is_admin" value="true">
+                                    <label class="form-check-label" for="is_admin">
+                                        Администратор организации
+                                    </label>
+
+                                </div>
+
+
+                        </div>
+
+                        <!-- Кнопки отправки -->
+                        <div class="d-flex justify-content-between pt-3 border-top">
+                            <a href="{% url 'organization_detail' request.GET.organization %}"
+                               class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left me-2"></i>Отмена
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle me-2"></i>Добавить сотрудника
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Подключение Select2 для красивого выбора пользователей -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container--default .select2-selection--single {
+        height: calc(3.5rem + 2px);
+        padding: 0.5rem 1rem;
+        border: 1px solid #dee2e6;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: calc(3.5rem + 2px);
+    }
+    .form-switch .form-check-input {
+        width: 3em;
+        height: 1.5em;
+        margin-right: 1em;
+    }
+
+    .form-switch .form-check-label{
+        line-height: 25px;
+
+    }
+</style>
+
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Выберите пользователя",
+            allowClear: true,
+            width: '100%'
+        });
+
+        // Валидация формы
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    });
+</script>
+{% endblock %}

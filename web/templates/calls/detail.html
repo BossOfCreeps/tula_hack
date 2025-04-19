@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+{% block content %}
+    {% is_call_admin request.user call as is_admin %}
+    {% get_user_call_matches request.user call as user_call_matches %}
+
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+      {% if is_admin %}
+        <div class="dropdown">
+          <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-gear me-1"></i> Действия
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Редактировать</a></li>
+            <li><a class="dropdown-item text-danger" href="{% url 'call_delete' call.id %}"><i class="bi bi-trash me-2"></i>Удалить</a></li>
+            {% if call.status != CallStatus.COMPLETED.value %}
+            {% endif %}
+          </ul>
+        </div>
+      {% endif %}
+
+      </div>
+
+      <!-- Основная карточка заявки -->
+      <div class="card border-0 shadow-sm mb-4 call-detail-card">
+        <div class="card-header bg-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+              <i class="bi bi-{% if call.type == 'FOOD' %}cup-hot{% elif call.type == 'MEDICAL' %}heart-pulse{% else %}info-circle{% endif %} me-2"></i>
+              {{ call }}
+            </h4>
+            <span class="badge
+                  {% if call.status == CallStatus.NEW.value %}bg-primary
+                  {% elif call.status == CallStatus.IN_PROGRESS.value %}bg-warning
+                  {% elif call.status == CallStatus.DONE.value %}bg-success
+                  {% else %}bg-secondary{% endif %}">
+              {{ call.get_status_display }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <!-- Блок с описанием -->
+          <div class="mb-4">
+            <h5 class="text-primary mb-3"><i class="bi bi-chat-left-text me-2"></i>Описание заявки</h5>
+            <div class="bg-light p-3 rounded">
+              <p class="mb-0">{{ call.text }}</p>
+            </div>
+          </div>
+
+          <!-- Детали заявки -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="detail-card">
+                <h5 class="text-primary"><i class="bi bi-geo-alt me-2"></i>Адрес</h5>
+                <p class="mb-0">{{ call.address }}</p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-card">
+                <h5 class="text-primary"><i class="bi bi-clock me-2"></i>Время</h5>
+                <p class="mb-0">{{ call.time }}</p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-card">
+                <h5 class="text-primary"><i class="bi bi-telephone me-2"></i>Контакты</h5>
+                <p class="mb-0">{{ call.contacts }}</p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <div class="detail-card">
+                <h5 class="text-primary"><i class="bi bi-person me-2"></i>Автор</h5>
+                <p class="mb-0">
+                  {{ call.user.get_full_name|default:call.user.username }}
+                  <small class="text-muted">({{ call.user.email }})</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer bg-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+              <i class="bi bi-calendar me-1"></i> Создано: {{ call.created_at|date:"d.m.Y H:i" }}
+            </small>
+          </div>
+        </div>
+      </div>
+
+        {% if is_admin %}
+            <!-- -->
+            {% endif %}
+
+
+    {% if not user_call_matches and not is_admin  %}
+            <form action="{% url 'match_create' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="user" value="{{ request.user.id }}">
+            <input type="hidden" name="call" value="{{ call.id }}">
+            <button type="submit" class="btn btn-success rounded-pill px-4 py-2 mt-1 shadow-sm hover-scale">
+                <i class="bi bi-heart-fill me-2"></i>Откликнуться на заявку
+            </button>
+            </form>
+    {% endif %}
+
+
+        {% if user_call_matches %}
+      <!-- Секция с откликами -->
+      <div class="mt-5">
+
+
+          <h4 class="mb-4 border-bottom pb-2">
+          <i class="bi bi-people-fill me-2"></i>Мой отклики
+        </h4>
+
+        <div class="row row-cols-1 g-3">
+          {% for match in user_call_matches %}
+          <div class="col">
+            <div class="card border-0 shadow-sm h-100 hover-shadow">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 class="card-title mb-1">
+                      <i class="bi bi-calendar me-1"></i> {{ match.created_at|date:"d.m.Y H:i" }}
+                    </h5>
+                    <p class="text-muted small mb-2">
+
+                      {% if match.rating %}
+                      <span class="ms-3">
+                        <i class="bi bi-star-fill text-warning"></i> {{ match.rating }}/5
+                      </span>
+                      {% endif %}
+                    </p>
+                  </div>
+                  <div>
+                    <a href="{% url 'match_detail' match.id %}" class="btn btn-sm btn-outline-primary">
+                      <i class="bi bi-box-arrow-in-right me-1"></i> Перейти
+                    </a>
+                  </div>
+                </div>
+
+                {% if match.user == request.user or is_admin %}
+                <div class="mt-3 pt-2 border-top">
+                  <div class="btn-group" role="group">
+                    <a href="{% url 'match_delete' match.id %}" class="btn btn-sm btn-outline-danger">
+                      <i class="bi bi-trash"></i> Удалить
+                    </a>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+    {% if is_admin %}
+          <div class="mt-5">
+
+
+          <h4 class="mb-4 border-bottom pb-2">
+          <i class="bi bi-people-fill me-2"></i>Отклики волонтёров
+        </h4>
+
+        <div class="row row-cols-1 g-3">
+          {% for match in call.matches.all %}
+          <div class="col">
+            <div class="card border-0 shadow-sm h-100 hover-shadow">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 class="card-title mb-1">
+                      <i class="bi bi-calendar me-1"></i> {{ match.user.get_full_name|default:match.user.username }}
+                    </h5>
+                  <span>
+                      {{ match.created_at|date:"d.m.Y H:i" }}
+                  </span>
+                    <p class="text-muted small mb-2">
+
+                      {% if match.rating %}
+                      <span class="ms-3">
+                        <i class="bi bi-star-fill text-warning"></i> {{ match.rating }}/5
+                      </span>
+                      {% endif %}
+                    </p>
+                  </div>
+                  <div>
+                    <a href="{% url 'match_detail' match.id %}" class="btn btn-sm btn-outline-primary">
+                      <i class="bi bi-box-arrow-in-right me-1"></i> Перейти
+                    </a>
+                  </div>
+                </div>
+
+                {% if match.user == request.user or is_admin %}
+                <div class="mt-3 pt-2 border-top">
+                  <div class="btn-group" role="group">
+                    <a href="{% url 'match_succeed' match.id %}" class="btn btn-sm btn-outline-success">
+                      <i class="bi bi-check"></i> Завершить
+                    </a>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+    {% endif %}
+    </div>
+  </div>
+</div>
+
+  </div>
+  </div>
+<style>
+  .call-detail-card {
+    border-left-width: 4px !important;
+    border-radius: 8px;
+  }
+
+  .detail-card {
+    background-color: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    height: 100%;
+  }
+
+  /* Таймлайн */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid #dee2e6;
+  }
+
+  .timeline-item:last-child {
+    border-left: 1px solid transparent;
+  }
+
+  .timeline-badge {
+    position: absolute;
+    left: -0.5rem;
+    top: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .timeline-content {
+    padding-left: 1rem;
+  }
+    *:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+
+</style>
+{% endblock %}
