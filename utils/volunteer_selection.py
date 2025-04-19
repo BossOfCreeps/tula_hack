@@ -23,6 +23,6 @@ def volunteer_selection_logic(obj: Call):
         Notification.create_and_send(
             user_id=user.id,
             title="Новая заявка",
-            text=f'Появилась заявка "{obj}"',
+            text=f'Появилась заявка\n"{obj}"',
             link=reverse("call_detail", args=[obj.id]),
         )

@@ -89,35 +89,33 @@
                         <thead class="table-light">
                         <tr>
                             <th>Отклик</th>
-                            <th>Заявка</th>
-                            <th>Создатель заявки</th>
+                            <th class="d-none d-md-table-cell">Заявка</th>
+                            <th class="d-none d-md-table-cell">Создатель заявки</th>
                             <th>Статус</th>
-                            <th>Оценка</th>
+                            <th class="d-none d-md-table-cell">Оценка</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for match in object_list %}
-
-
                             <tr>
                                 <td>
                                     <a href="{% url 'match_detail' match.id %}" class="text-decoration-none">
                                         {{ match.created_at|date:"d.m.Y H:i" }}
                                     </a>
                                 </td>
-                                <td>
+                                <td class="d-none d-md-table-cell">
                                     <a href="{% url 'call_detail' match.call.id %}" class="text-decoration-none">
                                         {{ match.call }}
                                     </a>
                                 </td>
-                                <td>
+                                <td class="d-none d-md-table-cell">
                                     {{ match.call.user.get_full_name|default:match.call.user.username }}
                                 </td>
                                 <td>
                                     {{ match.get_status_display }}
                                 </td>
 
-                                <td>
+                                <td class="d-none d-md-table-cell">
                                     {% if match.rating %}
                                         <div class="rating-stars">
                                             {% for i in "12345" %}
