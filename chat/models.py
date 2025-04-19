@@ -19,7 +19,7 @@ class Notification(models.Model):
     user = models.ForeignKey(User, models.CASCADE, "notifications")
     title = models.TextField(verbose_name="Заголовок")
     text = models.TextField(verbose_name="Текст")
-    link = models.URLField(verbose_name="Ссылка", null=True, blank=True)
+    link = models.TextField(verbose_name="Ссылка", null=True, blank=True)
     is_viewed = models.BooleanField(default=False, verbose_name="Просмотрено")
     created_at = models.DateTimeField(auto_now_add=True)
 

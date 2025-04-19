@@ -4,189 +4,201 @@
 
 
 {% block content %}
-{% is_organization_admin request.user organization as is_admin %}
+    {% is_organization_admin request.user organization as is_admin %}
 
     <div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <!-- Карточка организации -->
-      <div class="card border-0 shadow-lg overflow-hidden">
-        <div class="row g-0">
-          <!-- Блок с логотипом -->
-          <div class="col-md-4 bg-light d-flex align-items-center justify-content-center p-4">
-            {% if organization.logo %}
-              <img src="{{ organization.logo.url }}" alt="Логотип {{ organization.name }}" 
-                   class="img-fluid rounded-circle" style="max-height: 200px; object-fit: contain;">
-            {% else %}
-              <div class="text-center">
-                <i class="bi bi-building text-muted" style="font-size: 5rem;"></i>
-                <p class="mt-2 text-muted">Нет логотипа</p>
-              </div>
-            {% endif %}
-          </div>
-          
-          <!-- Блок с информацией -->
-          <div class="col-md-8">
-            <div class="card-body">
-              <!-- Заголовок с названием -->
-              <div class="d-flex justify-content-between align-items-start">
-                <h2 class="card-title mb-3 text-primary">{{ organization.name }}</h2>
-              </div>
-              
-              <!-- Описание -->
-              <p class="card-text text-muted mb-4">
-                {{ organization.description|default:"Описание отсутствует" }}
-              </p>
-              
-              <!-- Контактная информация -->
-              <div class="mb-4">
-                <h5 class="mb-3 text-secondary"><i class="bi bi-telephone me-2"></i>Контакты</h5>
-                <ul class="list-unstyled">
-                  {% if organization.phone %}
-                  <li class="mb-2">
-                    <i class="bi bi-telephone-outbound-fill text-primary me-2"></i>
-                    <a href="tel:{{ organization.phone }}" class="text-decoration-none">{{ organization.phone }}</a>
-                  </li>
-                  {% endif %}
-                  {% if organization.email %}
-                  <li class="mb-2">
-                    <i class="bi bi-envelope-fill text-primary me-2"></i>
-                    <a href="mailto:{{ organization.email }}" class="text-decoration-none">{{ organization.email }}</a>
-                  </li>
-                  {% endif %}
-                  {% if organization.site %}
-                  <li class="mb-2">
-                    <i class="bi bi-globe2 text-primary me-2"></i>
-                    <a href="{{ organization.site }}" target="_blank" class="text-decoration-none">{{ organization.site }}</a>
-                  </li>
-                  {% endif %}
-                  {% if organization.vk %}
-                  <li>
-                    <i class="fab fa-vk text-primary me-2"></i>
-                    <a href="{{ organization.vk }}" target="_blank" class="text-decoration-none">Страница ВКонтакте</a>
-                  </li>
-                  {% endif %}
-                </ul>
-              </div>
-              
-              <!-- Юридическая информация -->
-              <div class="border-top pt-3">
-                <h5 class="mb-3 text-secondary"><i class="bi bi-file-text me-2"></i>Юридическая информация</h5>
-                <div class="row">
-                  {% if organization.legal_name %}
-                  <div class="col-md-6 mb-2">
-                    <small class="text-muted">Юридическое название:</small>
-                    <p class="mb-0">{{ organization.legal_name }}</p>
-                  </div>
-                  {% endif %}
-                  {% if organization.tax_id %}
-                  <div class="col-md-6 mb-2">
-                    <small class="text-muted">ИНН:</small>
-                    <p class="mb-0">{{ organization.tax_id }}</p>
-                  </div>
-                  {% endif %}
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Карточка организации -->
+                <div class="card border-0 shadow-lg overflow-hidden">
+                    <div class="row g-0">
+                        <!-- Блок с логотипом -->
+                        <div class="col-md-4 bg-light d-flex align-items-center justify-content-center p-4">
+                            {% if organization.logo %}
+                                <img src="{{ organization.logo.url }}" alt="Логотип {{ organization.name }}"
+                                     class="img-fluid rounded-circle" style="max-height: 200px; object-fit: contain;">
+                            {% else %}
+                                <div class="text-center">
+                                    <i class="bi bi-building text-muted" style="font-size: 5rem;"></i>
+                                    <p class="mt-2 text-muted">Нет логотипа</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Блок с информацией -->
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <!-- Заголовок с названием -->
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h2 class="card-title mb-3 text-primary">{{ organization.name }}</h2>
+                                </div>
+
+                                <!-- Описание -->
+                                <p class="card-text text-muted mb-4">
+                                    {{ organization.description|default:"Описание отсутствует" }}
+                                </p>
+
+                                <!-- Контактная информация -->
+                                <div class="mb-4">
+                                    <h5 class="mb-3 text-secondary"><i class="bi bi-telephone me-2"></i>Контакты</h5>
+                                    <ul class="list-unstyled">
+                                        {% if organization.phone %}
+                                            <li class="mb-2">
+                                                <i class="bi bi-telephone-outbound-fill text-primary me-2"></i>
+                                                <a href="tel:{{ organization.phone }}"
+                                                   class="text-decoration-none">{{ organization.phone }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if organization.email %}
+                                            <li class="mb-2">
+                                                <i class="bi bi-envelope-fill text-primary me-2"></i>
+                                                <a href="mailto:{{ organization.email }}"
+                                                   class="text-decoration-none">{{ organization.email }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if organization.site %}
+                                            <li class="mb-2">
+                                                <i class="bi bi-globe2 text-primary me-2"></i>
+                                                <a href="{{ organization.site }}" target="_blank"
+                                                   class="text-decoration-none">{{ organization.site }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if organization.vk %}
+                                            <li>
+                                                <i class="fab fa-vk text-primary me-2"></i>
+                                                <a href="{{ organization.vk }}" target="_blank"
+                                                   class="text-decoration-none">Страница ВКонтакте</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+
+                                <!-- Юридическая информация -->
+                                <div class="border-top pt-3">
+                                    <h5 class="mb-3 text-secondary"><i class="bi bi-file-text me-2"></i>Юридическая
+                                        информация</h5>
+                                    <div class="row">
+                                        {% if organization.legal_name %}
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Юридическое название:</small>
+                                                <p class="mb-0">{{ organization.legal_name }}</p>
+                                            </div>
+                                        {% endif %}
+                                        {% if organization.tax_id %}
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">ИНН:</small>
+                                                <p class="mb-0">{{ organization.tax_id }}</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Футер карточки с кнопками действий -->
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                Зарегистрирована: {{ organization.created_at|date:"d.m.Y" }}
+                            </small>
+                            {% if is_admin %}
+                                <div>
+                                    <a href="#" class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="bi bi-pencil me-1"></i> Редактировать
+                                    </a>
+                                    <a href="{% url 'organization_delete' organization.id %}"
+                                       class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash me-1"></i> Удалить
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Футер карточки с кнопками действий -->
-        <div class="card-footer bg-light">
-          <div class="d-flex justify-content-between align-items-center">
-            <small class="text-muted">
-              <i class="bi bi-calendar3 me-1"></i> Зарегистрирована: {{ organization.created_at|date:"d.m.Y" }}
-            </small>
-                    {% if is_admin %}
-                <div>
-                  <a href="#" class="btn btn-outline-primary btn-sm me-2">
-                    <i class="bi bi-pencil me-1"></i> Редактировать
-                  </a>
-                  <a href="{% url 'organization_delete' organization.id %}" class="btn btn-outline-danger btn-sm">
-                    <i class="bi bi-trash me-1"></i> Удалить
-                  </a>
+
+
+                <div class="mt-4 d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0 text-secondary">Сотрудники организации</h4>
+
                 </div>
-                {% endif %}
-          </div>
-        </div>
-      </div>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
 
-        <div class="mt-4 d-flex justify-content-between align-items-center mb-4">
-          <h4 class="mb-0 text-secondary">Сотрудники организации</h4>
+                    {% for employee in object.employees.all %}
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title mb-1">{{ employee.user.get_full_name }}</h5>
+                                    <p class="text-muted small mb-2">{{ employee.position }}</p>
 
-        </div>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                                    <div class="d-flex justify-content-center gap-2 mb-3">
+                                        {% if employee.is_admin %}
+                                            <span class="badge bg-primary bg-opacity-10 text-primary">Админ</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if is_admin %}
+
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle"
+                                               data-bs-toggle="tooltip" title="Изменить">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="{% url 'employee_delete' employee.id %}"
+                                               class="btn btn-sm btn-outline-danger rounded-circle"
+                                               data-bs-toggle="tooltip" title="Удалить">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
 
 
-            {% for employee in object.employees.all %}
-            <div class="col">
-              <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
-                <div class="card-body text-center">
-                  <h5 class="card-title mb-1">{{ employee.user.get_full_name }}</h5>
-                  <p class="text-muted small mb-2">{{ employee.position }}</p>
+                </div>
+                {% if is_admin %}
 
-                  <div class="d-flex justify-content-center gap-2 mb-3">
-                      {% if employee.is_admin %}
-                    <span class="badge bg-primary bg-opacity-10 text-primary">Админ</span>
-                      {% endif %}
-                  </div>
-                    {% if is_admin %}
-
-                  <div class="d-flex justify-content-center gap-2">
-                    <a href="#" class="btn btn-sm btn-outline-primary rounded-circle"
-                       data-bs-toggle="tooltip" title="Изменить">
-                      <i class="bi bi-pencil"></i>
+                    <a href="{% url 'employee_create' %}?organization={{ organization.id }}"
+                       class="btn btn-primary rounded-pill px-4 py-2 mt-4 shadow-sm hover-scale">
+                        <i class="bi bi-person-plus-fill me-2"></i>Добавить сотрудника
                     </a>
-                    <a href="{% url 'employee_delete' employee.id %}" class="btn btn-sm btn-outline-danger rounded-circle"
-                       data-bs-toggle="tooltip" title="Удалить">
-                      <i class="bi bi-trash"></i>
-                    </a>
-                  </div>
                 {% endif %}
-                </div>
-              </div>
+
             </div>
-            {% endfor %}
-
-    
         </div>
-                    {% if is_admin %}
+    </div>
 
-        <a href="{% url 'employee_create' %}?organization={{ organization.id }}" class="btn btn-primary rounded-pill px-4 py-2 mt-4 shadow-sm hover-scale">
-            <i class="bi bi-person-plus-fill me-2"></i>Добавить сотрудника
-          </a>
-    {% endif %}
+    <style>
 
-  </div>
-  </div>
-</div>
+        .transition-all {
+            transition: all 0.3s ease;
+        }
 
-<style>
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
 
-  .transition-all {
-    transition: all 0.3s ease;
-  }
-  .badge {
-    font-weight: 500;
-    padding: 0.35em 0.65em;
-  }
-  .hover-scale {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.hover-scale:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-}
-</style>
-    
+        .hover-scale {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hover-scale:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+
     <script>
-  // Активация тултипов
-  document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-  })
-</script>
+        // Активация тултипов
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        })
+    </script>
 {% endblock %}

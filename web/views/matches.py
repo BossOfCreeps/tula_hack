@@ -39,7 +39,7 @@ class MatchCreateView(CreateView):
         Notification.create_and_send(
             user=self.object.call.user,
             title="Найден волонтер",
-            text=f'Найден волонтер для заявки "{self.object.call}"',
+            text=f'Найден волонтер для заявки\n"{self.object.call}"',
             link=reverse("call_detail", args=[self.object.call_id]),
         )
         return response

@@ -2,194 +2,196 @@
 {% load static %}
 
 {% block content %}
-<div class="container my-5">
+    <div class="container my-5">
 
-  <!-- Чат заявки -->
-  <div class="row">
-    <div class="col-12">
-        <a href="{% url 'call_detail' object.call_id %}" class="btn btn-outline-secondary">
-          <i class="bi bi-arrow-left me-2"></i>Перейти к описанию заявки
-        </a>
+        <!-- Чат заявки -->
+        <div class="row">
+            <div class="col-12">
+                <a href="{% url 'call_detail' object.call_id %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Перейти к описанию заявки
+                </a>
 
-      <div class="card border-0 shadow-sm mt-4">
+                <div class="card border-0 shadow-sm mt-4">
 
-          <div class="card-header bg-primary text-white">
-          <div class="d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">
-            {% if object.call.type == 'PSYCHO' %}
-            <i class="bi bi-chat-left-heart me-2"></i>
-            {% elif object.call.type == 'FINANCIAL' %}
-            <i class="bi bi-piggy-bank me-2"></i>
-            {% elif object.call.type == 'VOLUNTEER' %}
-            <i class="bi bi-people me-2"></i>
-            {% endif %}
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">
+                                {% if object.call.type == 'PSYCHO' %}
+                                    <i class="bi bi-chat-left-heart me-2"></i>
+                                {% elif object.call.type == 'FINANCIAL' %}
+                                    <i class="bi bi-piggy-bank me-2"></i>
+                                {% elif object.call.type == 'VOLUNTEER' %}
+                                    <i class="bi bi-people me-2"></i>
+                                {% endif %}
 
-              Чат заявки #{{ object.id }}
-            </h4>
-          </div>
-        </div>
-
-
-
-        <div class="card-body p-0">
-          <div class="chat-container" style="height: 500px; overflow-y: auto;" id="chat-messages">
-            {% for message in object.messages.all %}
-            <div class="chat-message {% if message.user == request.user %}chat-message-right{% else %}chat-message-left{% endif %} p-3">
-              <div class="d-flex">
-                <div class="flex-grow-1">
-                  <div class="message-content p-3 rounded {% if message.user == request.user %}bg-primary text-white{% else %}bg-light{% endif %}">
-                    <div class="d-flex justify-content-between mb-1">
-                      <strong>{% if message.user == request.user %}Вы{% else %}{{ message.user.get_full_name|default:message.user.username }}{% endif %}</strong>
-                      <small class="{% if message.user == request.user %}text-white-50{% else %}text-muted{% endif %}">
-                        {{ message.created_at|date:"H:i" }}
-                      </small>
+                                Чат заявки #{{ object.id }}
+                            </h4>
+                        </div>
                     </div>
-                    <p class="mb-0">{{ message.text|linebreaks }}</p>
-                  </div>
+
+
+                    <div class="card-body p-0">
+                        <div class="chat-container" style="height: 500px; overflow-y: auto;" id="chat-messages">
+                            {% for message in object.messages.all %}
+                                <div class="chat-message {% if message.user == request.user %}chat-message-right{% else %}chat-message-left{% endif %} p-3">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <div class="message-content p-3 rounded {% if message.user == request.user %}bg-primary text-white{% else %}bg-light{% endif %}">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <strong>{% if message.user == request.user %}Вы{% else %}
+                                                        {{ message.user.get_full_name|default:message.user.username }}{% endif %}</strong>
+                                                    <small class="{% if message.user == request.user %}text-white-50{% else %}text-muted{% endif %}">
+                                                        {{ message.created_at|date:"H:i" }}
+                                                    </small>
+                                                </div>
+                                                <p class="mb-0">{{ message.text|linebreaks }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="text-center py-5 text-muted">
+                                    <i class="bi bi-chat-square-text me-2" style="font-size: 2rem;"></i>
+                                    <p class="mt-2">Чат пока пуст</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Форма отправки сообщения -->
+                        <div class="p-3 border-top">
+
+                            <form method="post" action="{% url 'message_create' %}" enctype="multipart/form-data"
+                                  id="chat-form">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <input type="hidden" name="match" value="{{ object.id }}">
+                                    <input type="hidden" name="user" value="{{ request.user.id }}">
+
+                                    <!-- Многострочное текстовое поле -->
+                                    <textarea
+                                            class="form-control"
+                                            name="text"
+                                            rows="3"
+                                            placeholder="Напишите сообщение..."
+                                            required
+                                            style="resize: none; border-radius: 0.5rem 0.5rem 0 0;"
+                                    ></textarea>
+
+                                    <!-- Нижняя панель с кнопками -->
+                                    <div class="d-flex align-items-center bg-light p-2"
+                                         style="border-radius: 0 0 0.5rem 0.5rem; border: 1px solid #ced4da; border-top: none;">
+                                        <!-- Кнопка отправки -->
+                                        <button class="btn btn-primary btn-sm ms-auto" type="submit">
+                                            <i class="bi bi-send me-1"></i> Отправить
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            {% empty %}
-            <div class="text-center py-5 text-muted">
-              <i class="bi bi-chat-square-text me-2" style="font-size: 2rem;"></i>
-              <p class="mt-2">Чат пока пуст</p>
-            </div>
-            {% endfor %}
-          </div>
-
-          <!-- Форма отправки сообщения -->
-          <div class="p-3 border-top">
-
-            <form method="post" action="{% url 'message_create' %}" enctype="multipart/form-data" id="chat-form">
-              {% csrf_token %}
-              <div class="mb-3">
-                  <input type="hidden" name="match" value="{{ object.id }}">
-                  <input type="hidden" name="user" value="{{ request.user.id }}">
-
-                <!-- Многострочное текстовое поле -->
-                <textarea
-                  class="form-control"
-                  name="text"
-                  rows="3"
-                  placeholder="Напишите сообщение..."
-                  required
-                  style="resize: none; border-radius: 0.5rem 0.5rem 0 0;"
-                ></textarea>
-
-                <!-- Нижняя панель с кнопками -->
-                <div class="d-flex align-items-center bg-light p-2" style="border-radius: 0 0 0.5rem 0.5rem; border: 1px solid #ced4da; border-top: none;">
-                  <!-- Кнопка отправки -->
-                  <button class="btn btn-primary btn-sm ms-auto" type="submit">
-                    <i class="bi bi-send me-1"></i> Отправить
-                  </button>
-                </div>
-              </div>
-            </form>
-
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-</div>
 
-<style>
-  .chat-message {
-    margin-bottom: 1rem;
-  }
+    <style>
+        .chat-message {
+            margin-bottom: 1rem;
+        }
 
-  .chat-message-left {
-    padding-right: 15%;
-      margin-right: 100px;
-  }
+        .chat-message-left {
+            padding-right: 15%;
+            margin-right: 100px;
+        }
 
-  .chat-message-right {
-    padding-left: 15%;
-      margin-left: 100px;
-  }
+        .chat-message-right {
+            padding-left: 15%;
+            margin-left: 100px;
+        }
 
-  .message-content {
-    position: relative;
-  }
+        .message-content {
+            position: relative;
+        }
 
-  .chat-message-right .message-content:after {
-    content: '';
-    position: absolute;
-    right: -10px;
-    top: 15px;
-    width: 0;
-    height: 0;
-    border: 10px solid transparent;
-    border-left-color: #0d6efd;
-    border-right: 0;
-  }
+        .chat-message-right .message-content:after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 15px;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-left-color: #0d6efd;
+            border-right: 0;
+        }
 
-  .chat-message-left .message-content:after {
-    content: '';
-    position: absolute;
-    left: -10px;
-    top: 15px;
-    width: 0;
-    height: 0;
-    border: 10px solid transparent;
-    border-right-color: #f8f9fa;
-    border-left: 0;
-  }
+        .chat-message-left .message-content:after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 15px;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-right-color: #f8f9fa;
+            border-left: 0;
+        }
 
-  #chat-messages {
-    scroll-behavior: smooth;
-  }
+        #chat-messages {
+            scroll-behavior: smooth;
+        }
 
-    textarea:focus {
-    border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    outline: 0;
-  }
+        textarea:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            outline: 0;
+        }
 
-  /* Плавное изменение размера textarea */
-  textarea {
-    transition: height 0.2s ease;
-    min-height: 60px;
-    max-height: 200px;
-    overflow-y: auto !important;
-  }
+        /* Плавное изменение размера textarea */
+        textarea {
+            transition: height 0.2s ease;
+            min-height: 60px;
+            max-height: 200px;
+            overflow-y: auto !important;
+        }
 
-    *:focus {
-    outline: none !important;
-    box-shadow: none !important;
-  }
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
 
-  /* Стиль для активного поля ввода - оставляем только легкое подчеркивание */
-  textarea:focus {
-    border-color: #86b7fe;
-    box-shadow: none;
-  }
+        /* Стиль для активного поля ввода - оставляем только легкое подчеркивание */
+        textarea:focus {
+            border-color: #86b7fe;
+            box-shadow: none;
+        }
 
-  /* Плавное изменение размера textarea */
-  textarea {
-    transition: height 0.2s ease;
-    min-height: 60px;
-    max-height: 200px;
-    overflow-y: auto !important;
-  }
+        /* Плавное изменение размера textarea */
+        textarea {
+            transition: height 0.2s ease;
+            min-height: 60px;
+            max-height: 200px;
+            overflow-y: auto !important;
+        }
 
-  /* Стиль для списка файлов */
-  #file-list {
-    max-height: 60px;
-    overflow-y: auto;
-  }
+        /* Стиль для списка файлов */
+        #file-list {
+            max-height: 60px;
+            overflow-y: auto;
+        }
 
-  /* Стиль для кнопок при фокусе */
-  button:focus {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-</style>
+        /* Стиль для кнопок при фокусе */
+        button:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
 
-<script>
-document.querySelector('textarea[name="text"]').addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = (this.scrollHeight) + 'px';
-});
-</script>
+    <script>
+        document.querySelector('textarea[name="text"]').addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    </script>
 {% endblock %}

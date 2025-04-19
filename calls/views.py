@@ -27,7 +27,7 @@ class MatchViewSet(ModelViewSet):
     filterset_class = MatchFilter
 
     def get_serializer_class(self):
-        if self.action == "set_rating":
+        if self.action == "rating":
             return MatchRatingSerializer
         return MatchSerializer
 
@@ -39,7 +39,7 @@ class MatchViewSet(ModelViewSet):
         Notification.create_and_send(
             user=obj.call.user,
             title="Найден волонтер",
-            text=f'Найден волонтер для заявки "{obj.call}"',
+            text=f'Найден волонтер для заявки\n"{obj.call}"',
             link=reverse("call_detail", args=[obj.call_id]),
         )
 

@@ -9,6 +9,6 @@ class User(AbstractUser):
     help_types = ArrayField(models.CharField(max_length=30, choices=HelpType.choices), default=list)
     help_formats = ArrayField(models.CharField(max_length=30, choices=HelpFormat.choices), default=list)
 
-    rating = models.IntegerField(default=0)
+    city = models.CharField(max_length=100)
 
-    # TODO: город
+    rating = models.IntegerField(default=0)

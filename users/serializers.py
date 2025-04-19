@@ -6,10 +6,10 @@ from users.models import User
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username", "email", "password", "first_name", "last_name", "help_types", "help_formats"]
+        fields = ["username", "email", "password", "first_name", "last_name", "city", "help_types", "help_formats"]
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username", "email", "first_name", "last_name", "help_types", "help_formats"]
+        fields = ["id", "username", "email", "first_name", "last_name", "city", "help_types", "help_formats"]

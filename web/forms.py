@@ -14,6 +14,9 @@ class LoginForm(forms.Form):
 class RegisterForm(forms.Form):
     username = forms.CharField()
     email = forms.CharField()
+    city = forms.CharField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
     help_types = forms.MultipleChoiceField(
         choices=HelpType.choices, widget=forms.CheckboxSelectMultiple, required=False
