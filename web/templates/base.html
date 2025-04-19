@@ -66,9 +66,12 @@
         }
 
         :root {
-            --bs-body-font-size: 1.4rem; /* Стандартный размер (16px) */
+            --bs-body-font-size: 1.4rem;
         }
 
+        .form-control, .form-select, .form-label, .btn, p, a, span {
+            font-size: 1.4rem;
+        }
 
         body {
             font-size: var(--bs-body-font-size) !important;
@@ -132,7 +135,6 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="notificationsDropdown"
                                 style="min-width: 300px; max-height: 400px; overflow-y: auto;">
-                                <li><h6 class="dropdown-header">Уведомления</h6></li>
                                 {% for notification in user.notifications.all %}
                                     <li>
                                         <a class="dropdown-item d-flex align-items-center py-2"
