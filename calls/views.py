@@ -37,7 +37,7 @@ class MatchViewSet(ModelViewSet):
     def perform_create(self, serializer):
         obj: Match = serializer.save()
         Notification.create_and_send(
-            user=obj.call.user,
+            user_id=obj.call.user_id,
             title="Найден волонтер",
             text=f'Найден волонтер для заявки\n"{obj.call}"',
             link=reverse("call_detail", args=[obj.call_id]),

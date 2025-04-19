@@ -24,9 +24,14 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
-    def create_and_send(cls, user, title, text, link):
-        return Notification.objects.create(user=user, title=title, text=text, link=link)
+    def create_and_send(cls, user_id, title, text, link):
+        return Notification.objects.create(user_id=user_id, title=title, text=text, link=link)
+
+    @classmethod
+    async def acreate_and_send(cls, user_id, title, text, link):
+        return await Notification.objects.acreate(user_id=user_id, title=title, text=text, link=link)
 
     class Meta:
         verbose_name = "Уведомление"
         verbose_name_plural = "Уведомления"
+        ordering = ("-created_at",)

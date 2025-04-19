@@ -2,8 +2,10 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.models import AnonymousUser
+from django.urls import reverse
 
-from chat.models import Message
+from calls.models import Match
+from chat.models import Message, Notification
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -31,6 +33,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Сохраняем сообщение в БД
         new_message = await Message.objects.acreate(match_id=self.match_id, user_id=user_id, text=message)
+
+        match = await Match.objects.select_related("call").aget(pk=self.match_id)
+        await Notification.acreate_and_send(
+            user_id=match.call.user_id if match.user_id == user_id else match.user_id,
+            title="Новое сообщение в чате",
+            text=message,
+            link=reverse("match_detail", args=[self.match_id]),
+        )
 
         # Отправляем сообщение в группу комнаты
         await self.channel_layer.group_send(

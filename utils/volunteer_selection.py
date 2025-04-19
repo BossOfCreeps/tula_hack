@@ -21,7 +21,7 @@ def volunteer_selection_logic(obj: Call):
 
     for user in users:
         Notification.create_and_send(
-            user=user,
+            user_id=user.id,
             title="Новая заявка",
             text=f'Появилась заявка "{obj}"',
             link=reverse("call_detail", args=[obj.id]),

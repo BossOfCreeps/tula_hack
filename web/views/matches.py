@@ -37,7 +37,7 @@ class MatchCreateView(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         Notification.create_and_send(
-            user=self.object.call.user,
+            user_id=self.object.call.user_id,
             title="Найден волонтер",
             text=f'Найден волонтер для заявки\n"{self.object.call}"',
             link=reverse("call_detail", args=[self.object.call_id]),
