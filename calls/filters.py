@@ -6,6 +6,13 @@ from utils import HelpFormat, HelpType
 
 
 class CallFilter(django_filters.FilterSet):
+    my = django_filters.CharFilter(method="filter_my")
+
+    def filter_my(self, queryset, _, value):
+        if value == "1":
+            return queryset.filter(user=self.request.user)
+        return queryset
+
     class Meta:
         model = Call
         fields = "__all__"
