@@ -49,11 +49,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            {% empty %}
-                                <div class="text-center py-5 text-muted">
-                                    <i class="bi bi-chat-square-text me-2" style="font-size: 2rem;"></i>
-                                    <p class="mt-2">Чат пока пуст</p>
-                                </div>
                             {% endfor %}
                         </div>
 
@@ -81,7 +76,7 @@
                                     <div class="d-flex align-items-center bg-light p-2"
                                          style="border-radius: 0 0 0.5rem 0.5rem; border: 1px solid #ced4da; border-top: none;">
                                         <!-- Кнопка отправки -->
-                                        <button class="btn btn-primary btn-sm ms-auto" type="submit">
+                                        <button class="btn btn-primary btn-sm ms-auto">
                                             <i class="bi bi-send me-1"></i> Отправить
                                         </button>
                                     </div>
@@ -189,6 +184,73 @@
     </style>
 
     <script>
+        // WebSocket соединение
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host +
+            '/ws/chat/{{ object.id }}/'
+        );
+
+        // Обработчик входящих сообщений
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            const chatMessages = document.getElementById('chat-messages');
+
+            // Создаем HTML для нового сообщения
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${data.is_me ? 'chat-message-right' : 'chat-message-left'} p-3`;
+
+            messageDiv.innerHTML = `
+                <div class="d-flex">
+                    <div class="flex-grow-1">
+                        <div class="message-content p-3 rounded ${data.is_me ? 'bg-primary text-white' : 'bg-light'}">
+                            <div class="d-flex justify-content-between mb-1">
+                                <strong>${data.is_me ? 'Вы' : data.user_name}</strong>
+                                <small class="${data.is_me ? 'text-white-50' : 'text-muted'}">
+                                    ${data.created_at}
+                                </small>
+                            </div>
+                            <p class="mb-0">${data.message.replace(/\n/g, '<br>')}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Добавляем сообщение в чат
+            chatMessages.appendChild(messageDiv);
+
+            // Прокручиваем вниз
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        // Обработчик закрытия соединения
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        // Отправка сообщения через WebSocket
+        document.querySelector('#chat-form').onsubmit = function (e) {
+            e.preventDefault();
+            const messageInput = document.querySelector('textarea[name="text"]');
+            const message = messageInput.value.trim();
+
+            if (message) {
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+
+                // Очищаем поле ввода
+                messageInput.value = '';
+                messageInput.style.height = 'auto';
+                messageInput.style.height = '60px';
+            }
+        };
+
+        // Автопрокрутка при загрузке страницы
+        window.onload = function () {
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
         document.querySelector('textarea[name="text"]').addEventListener('input', function () {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
