@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                {% if not user_call_matches and not is_admin %}
+                {% if not user_call_matches and not is_admin and request.user.is_authenticated %}
                     {% if call.status == CallStatus.NEW.value %}
                         <form action="{% url 'match_create' %}" method="POST">
                             {% csrf_token %}

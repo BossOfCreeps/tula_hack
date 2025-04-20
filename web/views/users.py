@@ -16,7 +16,7 @@ class LoginView(FormView):
         user = User.objects.filter(username=form.cleaned_data["username"]).first()
         if user and user.check_password(form.cleaned_data["password"]):
             login(self.request, user)
-            return redirect(self.request.GET.get("next", "/"))
+        return redirect(self.request.GET.get("next", "/"))
 
 
 class LogoutView(View):
