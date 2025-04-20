@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+{% load static %}
+
+{% block title %}Профиль пользователя{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row">
+            <!-- Боковая панель профиля -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <!-- Имя и рейтинг -->
+                        <h3 class="mb-1">{{ user.get_full_name }}</h3>
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <div class="me-2">
+                                {% for _ in "12345" %}
+                                    {% if forloop.counter <= user.rating %}
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    {% else %}
+                                        <i class="bi bi-star text-secondary"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ user.rating }}.0</span>
+                        </div>
+
+                        <!-- Город -->
+                        <p class="text-muted mb-4">
+                            <i class="bi bi-geo-alt-fill me-1"></i>
+                            {{ user.city|default:"Город не указан" }}
+                        </p>
+
+                        <!-- Кнопка редактирования -->
+                        <button class="btn btn-outline-primary w-100 mb-3" data-bs-toggle="modal"
+                                data-bs-target="#editProfileModal">
+                            <i class="bi bi-pencil-square me-1"></i> Редактировать профиль
+                        </button>
+
+                        <!-- Статистика -->
+                        <div class="d-flex justify-content-around border-top pt-3">
+                            <div class="text-center">
+                                <small class="text-muted">Организации</small>
+                                <h5>{{ employees|length }}</h5>
+                            </div>
+                            <div class="text-center">
+                                <small class="text-muted">Заявки</small>
+                                <h5>{{ calls|length }}</h5>
+                            </div>
+                            <div class="text-center">
+                                <small class="text-muted">Отклики</small>
+                                <h5>{{ matches|length }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Виды помощи -->
+                <div class="card shadow-sm mt-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="bi bi-heart me-2"></i>Виды помощи</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            {% for help_type in user.help_types %}
+                                <li class="mb-2">
+                                    {{ help_type|display_help_type }}
+                                </li>
+                            {% empty %}
+                                <li class="text-muted">Не указаны</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Форматы помощи -->
+                <div class="card shadow-sm mt-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="bi bi-person me-2"></i>Форматы помощи</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            {% for help_format in user.help_formats %}
+                                <li class="mb-2">
+                                    {{ help_format|display_help_format }}
+                                </li>
+                            {% empty %}
+                                <li class="text-muted">Не указаны</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{% url 'logout' %}?next=/">
+                        <button class="btn btn-dark">
+                            <i class="bi bi-box-arrow-in-left"></i> Выйти из аккаунта
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Основное содержимое профиля -->
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2"></i>Информация о профиле</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="text-muted">Основная информация</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <strong>Имя пользователя:</strong>
+                                <span class="float-end">{{ user.username }}</span>
+                            </li>
+                            <li class="mb-3">
+                                <strong>Email:</strong>
+                                <span class="float-end">{{ user.email }}</span>
+                            </li>
+                            <li class="mb-3">
+                                <strong>Дата регистрации:</strong>
+                                <span class="float-end">{{ user.date_joined|date:"d.m.Y" }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Список организаций -->
+                <div class="card shadow-sm mt-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-building-fill me-2"></i>Мои организации</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            {% for employee in employees %}
+                                <a href="{% url 'organization_detail' employee.organization.id %}"
+                                   class="list-group-item list-group-item-action">
+                                    <p class="mb-1">{{ employee.organization }}</p>
+                                    <small class="text-muted">{{ employee.position }}</small>
+                                </a>
+                            {% endfor %}
+
+                            <a href="{% url 'organization_create' %}" class="mb-2 mt-3 mb-md-0">
+                                <button class="btn btn-primary ms-md-2">
+                                    Создать организацию
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Список заявок -->
+                <div class="card shadow-sm mt-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-list-check me-2"></i>Мои заявки</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            {% for call in calls %}
+                                <a href="{% url 'call_detail' call.id %}"
+                                   class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <p class="mb-1">{{ call }}</p>
+                                        <span class="badge
+                                              {% if call.status == CallStatus.NEW.value %}bg-primary
+                                              {% elif call.status == CallStatus.IN_PROGRESS.value %}bg-warning
+                                              {% elif call.status == CallStatus.DONE.value %}bg-success
+                                              {% else %}bg-secondary{% endif %}">
+                                          {{ call.get_status_display }}
+                                        </span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Список откликов -->
+                <div class="card shadow-sm mt-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-people me-2"></i>Мои отклики (как волонтёра)</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            {% for match in matches %}
+                                <a href="{% url 'match_detail' match.id %}"
+                                   class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <p class="mb-1">{{ match.created_at|date:"d.m.Y H:i" }} - {{ match.call }}</p>
+                                        <span class="badge
+                                              {% if match.status == MatchStatus.ACTIVE.value %}bg-primary
+                                              {% elif match.status == MatchStatus.SUCCESS.value %}bg-success
+                                              {% else %}bg-danger{% endif %}">
+                                          {{ match.get_status_display }}
+                                        </span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования профиля -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Редактирование профиля</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Имя</label>
+                                    <input type="text" class="form-control" name="first_name"
+                                           value="{{ user.first_name }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Фамилия</label>
+                                    <input type="text" class="form-control" name="last_name"
+                                           value="{{ user.last_name }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Город</label>
+                            <input type="text" class="form-control" name="city" value="{{ user.city }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Виды помощи</label>
+                            <div class="row">
+                                {% for choice in HelpType.choices %}
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   id="edit_help_type_{{ choice.0 }}"
+                                                   name="help_types" value="{{ choice.0 }}"
+                                                   {% if choice.0 in user.help_types %}checked{% endif %}>
+                                            <label class="form-check-label" for="edit_help_type_{{ choice.0 }}">
+                                                {{ choice.1 }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Форматы помощи</label>
+                            <div class="row">
+                                {% for choice in HelpFormat.choices %}
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   id="edit_help_format_{{ choice.0 }}"
+                                                   name="help_formats" value="{{ choice.0 }}"
+                                                   {% if choice.0 in user.help_formats %}checked{% endif %}>
+                                            <label class="form-check-label" for="edit_help_format_{{ choice.0 }}">
+                                                {{ choice.1 }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            border-radius: 0 !important;
+        }
+
+        .list-group-item {
+            border-left: none;
+            border-right: none;
+        }
+
+        .list-group-item:first-child {
+            border-top: none;
+        }
+    </style>
+{% endblock %}

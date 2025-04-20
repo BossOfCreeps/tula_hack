@@ -110,20 +110,18 @@
                     </div>
                 </div>
 
-                {% if is_admin %}
-                    <!-- -->
-                {% endif %}
-
-
                 {% if not user_call_matches and not is_admin %}
-                    <form action="{% url 'match_create' %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="user" value="{{ request.user.id }}">
-                        <input type="hidden" name="call" value="{{ call.id }}">
-                        <button type="submit" class="btn btn-success rounded-pill px-4 py-2 mt-1 shadow-sm hover-scale">
-                            <i class="bi bi-heart-fill me-2"></i>Откликнуться на заявку
-                        </button>
-                    </form>
+                    {% if call.status == CallStatus.NEW.value %}
+                        <form action="{% url 'match_create' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="user" value="{{ request.user.id }}">
+                            <input type="hidden" name="call" value="{{ call.id }}">
+                            <button type="submit"
+                                    class="btn btn-success rounded-pill px-4 py-2 mt-1 shadow-sm hover-scale">
+                                <i class="bi bi-heart-fill me-2"></i>Откликнуться на заявку
+                            </button>
+                        </form>
+                    {% endif %}
                 {% endif %}
 
 

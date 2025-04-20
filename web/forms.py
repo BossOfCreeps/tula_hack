@@ -12,12 +12,12 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
-    username = forms.CharField()
-    email = forms.CharField()
-    city = forms.CharField()
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(required=False)
+    email = forms.CharField(required=False)
+    city = forms.CharField(required=False)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    password = forms.CharField(widget=forms.PasswordInput(), required=False)
     help_types = forms.MultipleChoiceField(
         choices=HelpType.choices, widget=forms.CheckboxSelectMultiple, required=False
     )

@@ -21,6 +21,7 @@ from web.views import (
     OrganizationDeleteView,
     OrganizationDetailView,
     OrganizationListView,
+    ProfileView,
     RegisterView,
     speech_to_text,
 )
@@ -33,6 +34,7 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("register/", RegisterView.as_view(), name="register"),
+    path("profile/", ProfileView.as_view(), name="profile"),
     #
     path("organizations/", OrganizationListView.as_view(), name="organization_list"),
     path("organizations/create/", OrganizationCreateView.as_view(), name="organization_create"),

@@ -3,6 +3,7 @@ from django import template
 from calls.models import Call, Match
 from organizations.models import Organization
 from users.models import User
+from utils import HelpFormat, HelpType
 
 register = template.Library()
 
@@ -28,3 +29,13 @@ def is_call_admin(user: User, call: Call) -> bool:
 @register.simple_tag
 def get_user_call_matches(user: User, call: Call) -> list[Match] | None:
     return call.matches.filter(user=user) if user.is_authenticated else None
+
+
+@register.filter
+def display_help_type(value):
+    return HelpType(value).label
+
+
+@register.filter
+def display_help_format(value):
+    return HelpFormat(value).label

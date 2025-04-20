@@ -38,7 +38,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await Notification.acreate_and_send(
             user_id=match.call.user_id if match.user_id == user_id else match.user_id,
             title="Новое сообщение в чате",
-            text=message,
+            text=message[:25] + ("..." if len(message) > 25 else ""),
             link=reverse("match_detail", args=[self.match_id]),
         )
 
